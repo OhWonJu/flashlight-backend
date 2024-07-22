@@ -69,7 +69,6 @@ export class MemoService {
           id: userId,
         },
       },
-      // skip: offset,
       take: limit,
       ...(id && {
         skip: 1,

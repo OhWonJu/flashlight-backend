@@ -12,8 +12,8 @@ model User {
   id       String @id @default(uuid())
   userId   String @unique // OAuth Id
   name     String
-  imageUrl String @db.Text // imageURl 의 길이가 길 수 있으므로 db 의 텍스트 형식으로 저장되도록 함.
-  email    String @db.Text
+  imageUrl String? @db.Text // imageURl 의 길이가 길 수 있으므로 db 의 텍스트 형식으로 저장되도록 함.
+  email    String? @db.Text
 
   memos Memo[]
 

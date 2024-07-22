@@ -11,6 +11,7 @@ export class CreateUserDTO {
   @IsString()
   readonly imageUrl: string;
 
+  @IsOptional()
   @IsString()
   readonly email: string;
 }
