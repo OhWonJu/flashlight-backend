@@ -1,20 +1,26 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
 } from "@nestjs/common";
+import { Memo } from "@prisma/client";
+
+import { MutationResponse } from "decorators/types/mutationResopnse";
+
+import { CreateMemoDTO, UpdateMemoDTO } from "@lib/crud/memo/dto";
+import { Memos } from "@lib/crud/memo/memo.service";
 
 import { MemosService } from "./memos.service";
 import { AuthGuard } from "../auth/auth.guard";
-import { CreateMemoDTO, UpdateMemoDTO } from "@lib/crud/memo/dto";
-import { MutationResponse } from "decorators/types/mutationResopnse";
-import { Memo } from "@prisma/client";
 
 @UseGuards(AuthGuard)
 @Controller("memos")
@@ -28,9 +34,23 @@ export class MemosController {
     return await this.memosService.createMemo(createMemoDTO);
   }
 
-  @Get("/:memoId")
+  @Get("/memo/:memoId")
   async getMemo(@Param("memoId") memoId: string): Promise<Memo | undefined> {
     return await this.memosService.getMemo(memoId);
+  }
+
+  @Get("/list")
+  async getAllMemoList(
+    @Request() req,
+    @Query("offset", new DefaultValuePipe(0), ParseIntPipe) offset: number,
+    @Query("limit", new DefaultValuePipe(2), ParseIntPipe) limit: number,
+    @Query("cursor", new DefaultValuePipe("")) cursor?: string,
+  ): Promise<Memos[] | undefined> {
+    return await this.memosService.getMemos(req.user.sub, {
+      id: cursor,
+      offset,
+      limit,
+    });
   }
 
   @Patch("/:memoId")

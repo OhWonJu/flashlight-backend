@@ -22,7 +22,8 @@ export class MemosService {
     userId: string,
     option: GetMemosDTO,
   ): Promise<Memos[] | undefined> {
-    return await this.memoService.getMemos(userId, option);
+    const result = await this.memoService.getMemos(userId, option);
+    return result;
   }
 
   async updateMemo({

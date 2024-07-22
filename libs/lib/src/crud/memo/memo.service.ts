@@ -89,6 +89,9 @@ export class MemoService {
       ...(!id && {
         skip: offset,
       }),
+      orderBy: {
+        createdAt: "desc",
+      },
     });
   }
 
