@@ -19,7 +19,6 @@ import { AuthGuard } from "../auth/auth.guard";
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  // 유저 생성
   @Post("/create")
   async createUser(
     @Body() createUserDTO: CreateUserDTO,

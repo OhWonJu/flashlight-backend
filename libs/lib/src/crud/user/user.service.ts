@@ -20,10 +20,10 @@ export class UserService {
   }
 
   private async saveUser(createUserDTO: CreateUserDTO) {
-    const { email, imageUrl, name, userId } = createUserDTO;
+    const { email, imageUrl, name, snsId } = createUserDTO;
 
     const newUser = this.prisma.user.create({
-      data: { email, imageUrl, name, userId },
+      data: { email, imageUrl, name, snsId },
     });
 
     await this.prisma.$transaction([newUser]);

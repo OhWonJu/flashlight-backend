@@ -2,7 +2,7 @@ import { IsOptional, IsString } from "class-validator";
 
 export class CreateUserDTO {
   @IsString()
-  readonly userId: string;
+  readonly snsId: string;
 
   @IsString()
   readonly name: string;

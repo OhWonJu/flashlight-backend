@@ -7,6 +7,8 @@ import { MutationResponse } from "decorators/types/mutationResopnse";
 
 import { CreateMemoDTO, GetMemosDTO, UpdateMemoDTO } from "./dto";
 
+export type Memos = Omit<Memo, "content">;
+
 @Injectable()
 export class MemoService {
   constructor(private prisma: DatabaseService) {}
@@ -60,7 +62,7 @@ export class MemoService {
   async getMemos(
     userId: string,
     option: GetMemosDTO,
-  ): Promise<Memo[] | undefined> {
+  ): Promise<Memos[] | undefined> {
     const { id, offset, limit } = option;
 
     return await this.prisma.memo.findMany({
@@ -68,6 +70,14 @@ export class MemoService {
         user: {
           id: userId,
         },
+      },
+      select: {
+        coverImage: true,
+        id: true,
+        userId: true,
+        title: true,
+        createdAt: true,
+        updatedAt: true,
       },
       take: limit,
       ...(id && {
@@ -122,9 +132,9 @@ export class MemoService {
     }
   }
 
-  async deletMemo(id: string): Promise<MutationResponse> {
+  async deletMemo(id: string, userId: string): Promise<MutationResponse> {
     const memo = await this.prisma.memo.findUnique({
-      where: { id },
+      where: { id, userId },
     });
 
     if (!memo)
