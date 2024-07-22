@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/flashlight/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/flashlight/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/flashlight",
+  "projects": {
+    "flashlight": {
+      "type": "application",
+      "root": "apps/flashlight",
+      "entryFile": "main",
+      "sourceRoot": "apps/flashlight/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/flashlight/tsconfig.app.json"
+      }
+    },
+    "lib": {
+      "type": "library",
+      "root": "libs/lib",
+      "entryFile": "main",
+      "sourceRoot": "libs/lib/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/lib/tsconfig.app.json"
+      }
+    }
+  }
+}
