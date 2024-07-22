@@ -18,7 +18,15 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/flashlight-backend/test/jest-e2e.json"
+    "test:e2e": "jest --config ./apps/flashlight-backend/test/jest-e2e.json",
+    "daemon:dev": "pm2 start ecosystem.config.js --env development",
+    "daemon:stage": "pm2 start ecosystem.config.js --env stage",
+    "daemon:stop": "pm2 stop --force",
+    "daemon:reload": "pm2 reload",
+    "daemon:restart": "pm2 restart",
+    "daemon:preshutdown": "npm run daemon:stop",
+    "daemon:shutdown": "pm2 delete",
+    "daemon:postshutdown": "pm2 save --force"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.614.0",
