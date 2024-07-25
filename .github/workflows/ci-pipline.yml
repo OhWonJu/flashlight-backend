@@ -38,4 +38,25 @@ jobs:
           dockerfile: dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: EC2 deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_INSTANCE_ID }} # 인스턴스 IP
+          username: ${{ secrets.EC2_USERNAME }} # 우분투 아이디
+          key: ${{ secrets.EC2_PEM_KEY }} # ec2 instance pem key
+          port: ${{ secrets.EC2_SSH_PORT }} # 접속포트
+          script: |
+            sudo docker login -u devpio -p ${{ secrets.DOCKER_PASSWORD }}
+
+            CONTAINER_ID=$(sudo docker ps -q --filter "publish=80-8080")
+
+            if [ ! -z "$CONTAINER_ID" ]; then
+            sudo docker stop $CONTAINER_ID
+            sudo docker rm $CONTAINER_ID
+            fi
+            
+            sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/flashlight-server
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/flashlight-server
+            docker run -d --name flashlight-ec2 -p 4000:4000 flashlight-server
         
