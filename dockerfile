@@ -37,6 +37,6 @@ RUN corepack prepare yarn@4.3.1 --activate
 RUN npm install -g dotenv-cli pm2
 COPY . .
 RUN yarn install
-RUN yarn run build
+RUN yarn build
 EXPOSE 4000
 CMD [ "yarn", "daemon:stage" ]
