@@ -39,4 +39,4 @@ COPY . .
 RUN yarn install
 RUN yarn run build
 EXPOSE 4000
-CMD [ "yarn", "start:stage" ]
+CMD [ "yarn", "daemon:stage" ]
