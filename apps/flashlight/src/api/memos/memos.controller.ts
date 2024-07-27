@@ -10,7 +10,9 @@ import {
   Post,
   Query,
   Request,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from "@nestjs/common";
 import { Memo } from "@prisma/client";
 
@@ -21,6 +23,7 @@ import { Memos } from "@lib/crud/memo/memo.service";
 
 import { MemosService } from "./memos.service";
 import { AuthGuard } from "../auth/auth.guard";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @UseGuards(AuthGuard)
 @Controller("memos")
@@ -54,14 +57,17 @@ export class MemosController {
   }
 
   @Patch("/:memoId")
+  @UseInterceptors(FileInterceptor("file"))
   async updateMemo(
     @Request() req,
     @Param("memoId") memoId: string,
+    @UploadedFile() file,
     @Body() updateMemoDTO: UpdateMemoDTO,
   ): Promise<MutationResponse> {
     return await this.memosService.updateMemo({
       memoId,
       userId: req.user.sub,
+      file,
       updateMemoDTO,
     });
   }
