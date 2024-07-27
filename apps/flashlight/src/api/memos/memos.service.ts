@@ -50,7 +50,7 @@ export class MemosService {
       const s3Url = await this.uploadsService.uploadToS3(file, s3ObjectPath);
 
       updateMemoDTO.coverImage = s3Url
-        ? `${cloudFrontDomain}/${s3ObjectPath}`
+        ? `${cloudFrontDomain}/${s3ObjectPath}/${s3Url.split("/").pop()}`
         : "";
     }
 
