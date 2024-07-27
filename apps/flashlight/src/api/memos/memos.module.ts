@@ -1,10 +1,13 @@
 import { Module } from "@nestjs/common";
+
+import { MemoModule } from "@lib/crud/memo/memo.module";
+import { UploadsModule } from "@lib/uploads/uploads.module";
+
 import { MemosController } from "./memos.controller";
 import { MemosService } from "./memos.service";
-import { MemoModule } from "@lib/crud/memo/memo.module";
 
 @Module({
-  imports: [MemoModule],
+  imports: [MemoModule, UploadsModule],
   controllers: [MemosController],
   providers: [MemosService],
   exports: [MemosService],

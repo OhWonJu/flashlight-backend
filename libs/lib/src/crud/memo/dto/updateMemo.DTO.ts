@@ -11,5 +11,5 @@ export class UpdateMemoDTO {
 
   @IsOptional()
   @IsString()
-  readonly coverImage: string;
+  coverImage: string;
 }
