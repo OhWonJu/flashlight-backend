@@ -5,9 +5,10 @@ import { UploadsModule } from "@lib/uploads/uploads.module";
 
 import { MemosController } from "./memos.controller";
 import { MemosService } from "./memos.service";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
-  imports: [MemoModule, UploadsModule],
+  imports: [MemoModule, ConfigModule, UploadsModule],
   controllers: [MemosController],
   providers: [MemosService],
   exports: [MemosService],

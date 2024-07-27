@@ -6,11 +6,13 @@ import { Memos, MemoService } from "@lib/crud/memo/memo.service";
 import { CreateMemoDTO, GetMemosDTO, UpdateMemoDTO } from "@lib/crud/memo/dto";
 
 import { MutationResponse } from "decorators/types/mutationResopnse";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class MemosService {
   constructor(
     private memoService: MemoService,
+    private configService: ConfigService,
     private uploadsService: UploadsService,
   ) {}
 
@@ -41,12 +43,15 @@ export class MemosService {
     file: any;
     updateMemoDTO: UpdateMemoDTO;
   }): Promise<MutationResponse> {
-    const folderName = "user/" + userId + "/" + memoId;
+    const s3ObjectPath = "user/" + userId + "/" + memoId;
+    const cloudFrontDomain = this.configService.get<string>("AWS_CF_DOMAIN");
 
     if (file) {
-      const s3Url = await this.uploadsService.uploadToS3(file, folderName);
+      const s3Url = await this.uploadsService.uploadToS3(file, s3ObjectPath);
 
-      updateMemoDTO.coverImage = s3Url;
+      updateMemoDTO.coverImage = s3Url
+        ? `${cloudFrontDomain}/${s3ObjectPath}`
+        : "";
     }
 
     return await this.memoService.updateMemo(memoId, userId, updateMemoDTO);
